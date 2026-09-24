@@ -24,4 +24,5 @@ jobs:
       - run: pnpm fmt:check
       - run: pnpm lint
       - run: pnpm tsc
+      - run: pnpm db:check
       - run: pnpm expo export --platform all

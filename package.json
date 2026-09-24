@@ -18,6 +18,7 @@
     "check": "pnpm fmt:check && pnpm lint && pnpm tsc && pnpm build",
     "db:init": "initdb -D .db",
     "db:run": "postgres -D .db -p 54321",
+    "db:check": "drizzle-kit check",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"

@@ -9,3 +9,4 @@ web-build
 .git
 .pnpm-store
 *.log
+migration
