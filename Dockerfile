@@ -4,14 +4,13 @@ WORKDIR /app
 RUN npm install --global pnpm@10.33.4
 # refer to: https://docs.expo.dev/router/web/api-routes/#express
 COPY . .
-RUN pnpm add --save-dev --allow-build=esbuild express compression morgan
-RUN pnpm expo install expo-server # suggested by codex
+# RUN pnpm add --save-dev --allow-build=esbuild express compression morgan
+# RUN pnpm expo install expo-server # suggested by codex
+RUN pnpm install --frozen-lockfile
 RUN pnpm expo export -p web
 
-CMD ["node", "server.ts"]
 
-
-FROM node:22-bookworm-slim
+FROM node:22.22.3-alpine3.24
 WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
