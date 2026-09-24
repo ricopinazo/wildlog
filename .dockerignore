@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+.db
+.expo
+node_modules
+dist
+web-build
+.git
+.pnpm-store
+*.log

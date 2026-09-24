@@ -15,6 +15,7 @@
     "lint:fix": "oxlint --fix",
     "tsc": "tsc --noEmit",
     "build": "expo export --platform all",
+    "check": "pnpm fmt:check && pnpm lint && pnpm tsc && pnpm build",
     "db:init": "initdb -D .db",
     "db:run": "postgres -D .db -p 54321",
     "db:generate": "drizzle-kit generate",
