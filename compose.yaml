@@ -1,12 +1,13 @@
 services:
   app:
+    image: wildlog
     build:
       context: .
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     ports:
-      - "8081:8081"
+      - "3000:80"
     depends_on:
       db:
         condition: service_healthy
