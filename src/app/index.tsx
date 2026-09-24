@@ -98,7 +98,13 @@ export default function HomeScreen() {
 
         <ThemedView type="backgroundElement" style={styles.authSection}>
           <ThemedText type="subtitle" style={styles.authTitle}>
-            {isPending ? "Checking account…" : session ? "Signed in" : isSignUp ? "Sign up" : "Log in"}
+            {isPending
+              ? "Checking account…"
+              : session
+                ? "Signed in"
+                : isSignUp
+                  ? "Sign up"
+                  : "Log in"}
           </ThemedText>
           {isPending ? (
             <ActivityIndicator />
@@ -106,7 +112,9 @@ export default function HomeScreen() {
             <>
               <ThemedText>{session.user.name || session.user.email}</ThemedText>
               {session.user.name ? (
-                <ThemedText type="small" themeColor="textSecondary">{session.user.email}</ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {session.user.email}
+                </ThemedText>
               ) : null}
               <Pressable
                 accessibilityRole="button"
@@ -139,7 +147,11 @@ export default function HomeScreen() {
                 style={styles.input}
                 value={password}
               />
-              {authError ? <ThemedText accessibilityRole="alert" style={styles.error}>{authError}</ThemedText> : null}
+              {authError ? (
+                <ThemedText accessibilityRole="alert" style={styles.error}>
+                  {authError}
+                </ThemedText>
+              ) : null}
               <Pressable
                 accessibilityRole="button"
                 disabled={isSigningIn || !email.trim() || !password}
@@ -150,7 +162,13 @@ export default function HomeScreen() {
                   (isSigningIn || !email.trim() || !password) && styles.disabledButton,
                 ]}
               >
-                {isSigningIn ? <ActivityIndicator color="#ffffff" /> : <ThemedText style={styles.authButtonText}>{isSignUp ? "Sign up" : "Log in"}</ThemedText>}
+                {isSigningIn ? (
+                  <ActivityIndicator color="#ffffff" />
+                ) : (
+                  <ThemedText style={styles.authButtonText}>
+                    {isSignUp ? "Sign up" : "Log in"}
+                  </ThemedText>
+                )}
               </Pressable>
               <Pressable
                 accessibilityRole="button"
@@ -166,7 +184,11 @@ export default function HomeScreen() {
               </Pressable>
             </>
           )}
-          {authError && session ? <ThemedText accessibilityRole="alert" style={styles.error}>{authError}</ThemedText> : null}
+          {authError && session ? (
+            <ThemedText accessibilityRole="alert" style={styles.error}>
+              {authError}
+            </ThemedText>
+          ) : null}
         </ThemedView>
 
         {Platform.OS === "web" && <WebBadge />}
