@@ -6,8 +6,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-    ports:
-      - "54321:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,30 +30,36 @@ services:
     image: wildlog
     build:
       context: .
+    container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wildlog.rule=Host(`${HOST}`)"
-      - "traefik.http.routers.wildlog.entrypoints=web"
+    networks:
+      - proxy
+      - default
     depends_on:
       db:
         condition: service_healthy
       migration:
         condition: service_completed_successfully
 
-  studio:
-    image: ghcr.io/drizzle-team/gateway:latest
-    restart: unless-stopped
-    ports:
-      - "4983:4983"
-    environment:
-      MASTERPASS: masterpass
-    volumes:
-      - drizzle-gateway:/app
+# studio:
+#   image: ghcr.io/drizzle-team/gateway:latest
+#   restart: unless-stopped
+#   ports:
+#     - "4983:4983"
+#   environment:
+#     MASTERPASS: masterpass
+#   volumes:
+#     - drizzle-gateway:/app
 
 volumes:
   postgres_data:
-  drizzle-gateway:
+# drizzle-gateway:
+
+networks:
+  proxy:
+    name: proxy
