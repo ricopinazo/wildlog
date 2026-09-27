@@ -1,7 +1,7 @@
-name: CI
-
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 permissions:
@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   lint-and-typecheck:
-    name: Lint and typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +25,26 @@ jobs:
       - run: pnpm tsc
       - run: pnpm db:check
       - run: pnpm expo export --platform all
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOYMENT: ${{ github.event_name == 'pull_request' && format('wildlog-pr-{0}', github.event.pull_request.number) || 'wildlog') }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate deployment name
+        run: |
+          test -n "$DEPLOYMENT"
+          if [ "$DEPLOYMENT" = "wildlog" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            exit 1
+          fi
+      - uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Create Docker SSH context
+        run: docker context create deploy --docker "host=ssh://${{ secrets.DEPLOY_HOST }}"
+      - name: Build and start services
+        env:
+          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+        run: |
+          docker --context deploy compose build
+          docker --context deploy compose -p "$DEPLOYMENT" -e HOST="$DEPLOYMENT.${{ secrets.DEPLOY_HOST }}" up -d

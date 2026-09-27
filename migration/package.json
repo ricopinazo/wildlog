@@ -1,7 +1,13 @@
 {
   "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "build": "esbuild migrate.ts --bundle --platform=node --target=node22 --outfile=dist/migrate.js"
+  },
   "dependencies": {
     "drizzle-orm": "^1.0.0-rc.4",
     "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

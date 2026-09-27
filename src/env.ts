@@ -6,4 +6,6 @@ function required(name: string) {
   return value;
 }
 
+required("BETTER_AUTH_SECRET"); // openssl rand -base64 32
+
 export const DATABASE_URL = required("DATABASE_URL");

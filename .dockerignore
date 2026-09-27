@@ -3,10 +3,13 @@
 !.env.example
 .db
 .expo
-node_modules
-dist
+**/node_modules
+**/dist
 web-build
 .git
 .pnpm-store
 *.log
-migration
+compose.yaml
+Dokcerfile
+migration.Dockerfile
+.dockerignore

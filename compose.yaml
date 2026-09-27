@@ -1,17 +1,4 @@
 services:
-  app:
-    image: wildlog
-    build:
-      context: .
-    restart: unless-stopped
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
-    ports:
-      - "3000:80"
-    depends_on:
-      db:
-        condition: service_healthy
-
   db:
     image: postgres:17-alpine
     restart: unless-stopped
@@ -29,5 +16,46 @@ services:
       timeout: 5s
       retries: 5
 
+  migration:
+    image: migration
+    build:
+      context: .
+      dockerfile: migration.Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # TODO: add traefik
+  app:
+    image: wildlog
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wildlog.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.wildlog.entrypoints=web"
+    depends_on:
+      db:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+
+  studio:
+    image: ghcr.io/drizzle-team/gateway:latest
+    restart: unless-stopped
+    ports:
+      - "4983:4983"
+    environment:
+      MASTERPASS: masterpass
+    volumes:
+      - drizzle-gateway:/app
+
 volumes:
   postgres_data:
+  drizzle-gateway:
