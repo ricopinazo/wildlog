@@ -25,3 +25,5 @@ export const auth = betterAuth({
     schema,
   }),
 });
+
+console.info("BETTER AUTH TRSUTED ORIGINS:", auth.options.trustedOrigins);

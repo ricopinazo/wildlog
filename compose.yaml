@@ -25,7 +25,6 @@ services:
       db:
         condition: service_healthy
 
-  # TODO: add traefik
   app:
     image: wildlog
     build:
