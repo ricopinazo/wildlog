@@ -4,6 +4,7 @@
 # FIXME: the date suffix does not work
 KEY_PATH ?= $(HOME)/.ssh/github-actions-wildlog-$(shell date +"%Y-%m-%dT%H:%M:%S%z")
 
+# the user needs to be on the docker group: sudo usermod -aG docker "$SERVER_USER" # then log out
 gen-ssh-keys:
 	@ssh-keygen -t ed25519 -C github-actions-wildlog -N "" -f "$(KEY_PATH)"
 	@echo "Private key to store on GitHub as DEPLOY_SSH_KEY:"
