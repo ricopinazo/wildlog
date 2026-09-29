@@ -46,6 +46,12 @@ jobs:
       - uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Accept new SSH host keys
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf 'Host *\n  StrictHostKeyChecking accept-new\n' >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
       - name: Create Docker SSH context
         run: docker context create deploy --docker "host=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }}"
       - name: Build and start services
