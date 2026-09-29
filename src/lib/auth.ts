@@ -3,11 +3,13 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { expo } from "@better-auth/expo";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
+import { SERVER_DOMAIN } from "@/env";
 
 export const auth = betterAuth({
   plugins: [expo()],
   trustedOrigins: [
     "wildlog://",
+    `https://*.${SERVER_DOMAIN}`,
     // Development mode - Expo's exp:// scheme with local IP ranges
     ...(process.env.NODE_ENV === "development"
       ? [
@@ -26,4 +28,4 @@ export const auth = betterAuth({
   }),
 });
 
-console.info("BETTER AUTH TRSUTED ORIGINS:", auth.options.trustedOrigins);
+console.info("BETTER AUTH TRUSTED ORIGINS:", auth.options.trustedOrigins);

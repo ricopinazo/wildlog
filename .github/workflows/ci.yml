@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  lint-and-typecheck:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,8 +27,9 @@ jobs:
       - run: pnpm expo export --platform all
   deploy:
     runs-on: ubuntu-latest
+    needs: check
     env:
-      DEPLOYMENT: ${{ github.event_name == 'pull_request' && format('wildlog-pr-{0}', github.event.pull_request.number) || 'wildlog') }}
+      DEPLOYMENT: ${{ github.event_name == 'pull_request' && format('wildlog-pr-{0}', github.event.pull_request.number) || 'wildlog' }}
     steps:
       - uses: actions/checkout@v4
       - name: Validate deployment name
@@ -41,10 +42,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
       - name: Create Docker SSH context
-        run: docker context create deploy --docker "host=ssh://${{ secrets.DEPLOY_HOST }}"
+        run: docker context create deploy --docker "host=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }}"
       - name: Build and start services
         env:
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+          SERVER_DOMAIN: ${{ secrets.SERVER_DOMAIN }}
         run: |
           docker --context deploy compose build
-          docker --context deploy compose -p "$DEPLOYMENT" -e HOST="$DEPLOYMENT.${{ secrets.DEPLOY_HOST }}" up -d
+          docker --context deploy compose -p "$DEPLOYMENT" up -d
