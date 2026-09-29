@@ -20,6 +20,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm expo customize tsconfig.json # this is to generate expo-env.d.ts
       - run: pnpm fmt:check
       - run: pnpm lint
       - run: pnpm tsc
