@@ -1,5 +1,4 @@
 {
-  "packageManager": "pnpm@10.33.4",
   "scripts": {
     "build": "esbuild migrate.ts --bundle --platform=node --target=node22 --outfile=dist/migrate.js"
   },
@@ -9,5 +8,6 @@
   },
   "devDependencies": {
     "esbuild": "^0.28.2"
-  }
+  },
+  "packageManager": "pnpm@10.33.4"
 }

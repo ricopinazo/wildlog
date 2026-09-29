@@ -11,6 +11,4 @@ async function runMigration() {
   console.log("Migration completed ✅");
 }
 
-runMigration().catch((error) =>
-  console.error("Error in migration process 🚨:", error),
-);
+runMigration().catch((error) => console.error("Error in migration process 🚨:", error));
