@@ -1,11 +1,5 @@
 import * as Device from "expo-device";
-import {
-  ActivityIndicator,
-  Platform,
-  Pressable,
-  StyleSheet,
-  TextInput,
-} from "react-native";
+import { ActivityIndicator, Platform, Pressable, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
 
@@ -58,8 +52,7 @@ export default function HomeScreen() {
             name: email.trim().split("@")[0],
           })
         : await authClient.signIn.email({ email: email.trim(), password });
-      if (result.error)
-        setAuthError(result.error.message ?? "Unable to sign in.");
+      if (result.error) setAuthError(result.error.message ?? "Unable to sign in.");
     } catch {
       setAuthError("Unable to sign in. Check your connection and try again.");
     } finally {
@@ -71,8 +64,7 @@ export default function HomeScreen() {
     setAuthError(null);
     try {
       const result = await authClient.signOut();
-      if (result.error)
-        setAuthError(result.error.message ?? "Unable to sign out.");
+      if (result.error) setAuthError(result.error.message ?? "Unable to sign out.");
     } catch {
       setAuthError("Unable to sign out. Check your connection and try again.");
     }
@@ -128,10 +120,7 @@ export default function HomeScreen() {
                 accessibilityRole="button"
                 disabled={isSigningIn}
                 onPress={handleSignOut}
-                style={({ pressed }) => [
-                  styles.authButton,
-                  pressed && styles.pressed,
-                ]}
+                style={({ pressed }) => [styles.authButton, pressed && styles.pressed]}
               >
                 <ThemedText style={styles.authButtonText}>Log out</ThemedText>
               </Pressable>
@@ -170,8 +159,7 @@ export default function HomeScreen() {
                 style={({ pressed }) => [
                   styles.authButton,
                   pressed && styles.pressed,
-                  (isSigningIn || !email.trim() || !password) &&
-                    styles.disabledButton,
+                  (isSigningIn || !email.trim() || !password) && styles.disabledButton,
                 ]}
               >
                 {isSigningIn ? (
@@ -191,9 +179,7 @@ export default function HomeScreen() {
                 }}
               >
                 <ThemedText type="small" style={styles.authToggle}>
-                  {isSignUp
-                    ? "Already have an account? Log in"
-                    : "Need an account? Sign up"}
+                  {isSignUp ? "Already have an account? Log in" : "Need an account? Sign up"}
                 </ThemedText>
               </Pressable>
             </>
