@@ -38,6 +38,8 @@ jobs:
       packages: write
     env:
       COMMIT_SHA: ${{ github.sha }}
+      BETTER_AUTH_SECRET: ""
+      SERVER_DOMAIN: ""
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3
@@ -51,8 +53,6 @@ jobs:
           source: .
           files: compose.yaml
           push: true
-          set: |
-            *.labels=org.opencontainers.image.source=https://github.com/${{ github.repository }}
   deployment_name:
     runs-on: ubuntu-latest
     outputs:
