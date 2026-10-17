@@ -93,7 +93,7 @@ jobs:
           chmod 600 ~/.ssh/config
       - name: Create Docker SSH context
         run: docker context create deploy --docker "host=ssh://${{ secrets.SERVER_USER }}@${{ vars.SERVER_DOMAIN }}"
-      - name: Build and start services
+      - name: Start services
         env:
           SERVER_DOMAIN: ${{ vars.SERVER_DOMAIN }}
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
