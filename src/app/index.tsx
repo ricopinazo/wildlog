@@ -76,7 +76,7 @@ export default function HomeScreen() {
         <ThemedView style={styles.heroSection}>
           <AnimatedIcon />
           <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
+            Hello from a PR
           </ThemedText>
         </ThemedView>
         <ThemedText type="code" style={styles.code}>
