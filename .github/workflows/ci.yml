@@ -70,11 +70,10 @@ jobs:
     needs: [check, build_images, deployment_name]
     env:
       DEPLOYMENT: ${{ needs.deployment_name.outputs.deployment }}
-      SERVER_DOMAIN: ${{ secrets.SERVER_DOMAIN }}
       COMMIT_SHA: ${{ github.sha }}
     environment:
       name: ${{ needs.deployment_name.outputs.deployment }}
-      url: ${{ format('https://{0}.{1}', needs.deployment_name.outputs.deployment, env.SERVER_DOMAIN) }}
+      url: ${{ format('https://{0}.{1}', needs.deployment_name.outputs.deployment, vars.SERVER_DOMAIN) }}
     steps:
       - uses: actions/checkout@v4
       - name: Validate deployment name
@@ -93,9 +92,10 @@ jobs:
           printf 'Host *\n  StrictHostKeyChecking accept-new\n' >> ~/.ssh/config
           chmod 600 ~/.ssh/config
       - name: Create Docker SSH context
-        run: docker context create deploy --docker "host=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }}"
+        run: docker context create deploy --docker "host=ssh://${{ secrets.SERVER_USER }}@${{ vars.SERVER_DOMAIN }}"
       - name: Build and start services
         env:
+          SERVER_DOMAIN: ${{ vars.SERVER_DOMAIN }}
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
         run: |
           docker --context deploy compose -p "$DEPLOYMENT" up -d
