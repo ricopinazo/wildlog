@@ -34,6 +34,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      SERVER_DOMAIN: ${SERVER_DOMAIN}
     labels:
       - "traefik.enable=true"
     networks:
